@@ -1,0 +1,70 @@
+package com.websystique.springmvc.configuration;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class MessageBoardSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+				
+		http.authorizeRequests()
+
+		    .antMatchers("/messageList*").hasAnyRole("USER")
+			.antMatchers("/messagePost*").hasRole("ADMIM","USER")
+			.antMatchers("/messageDelete*").hasAnyRole("ADMIM", "USER")
+		
+/*		.antMatchers("/messageList*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+		.antMatchers("/messageDelete*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+		.antMatchers("/messagePost*").access("hasRole('ROLE_USER')")
+*/		.and()
+				 .formLogin().
+				 loginPage("/login.jsp")
+				 .loginProcessingUrl("/j_spring_security_check")
+				 .usernameParameter("j_username")
+		          .passwordParameter("j_password")
+				 .defaultSuccessUrl("/messageList")
+				 .failureUrl("/login.jsp?error=true")
+				 //.failureUrl("/login.jsp") 
+				 .and().
+				 logout().
+				 logoutSuccessUrl("/login.jsp") 
+				 .and()
+				 .anonymous().principal("guest").authorities("ROLE_GUEST")
+				 .and().rememberMe()
+				 ;
+				
+			 http.csrf().disable();
+	}
+
+	
+/*    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/").permitAll() 
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login.jsp")
+                .permitAll()
+                .and()
+            .logout()                                    
+                .permitAll();
+		 http.csrf().disable();
+
+    }*/
+
+    // ...
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("admin").password("secret").authorities("ROLE_ADMIN", "ROLE_USER").and()
+				.withUser("user1").password("1111").authorities("ROLE_USER");
+	}
+}

@@ -1,0 +1,20 @@
+package com.rest.service;
+
+import java.util.List;
+
+import com.rest.beans.Member;
+
+public class MemberService {
+
+	private List<Member> memberList;
+
+	public List<Member> getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(List<Member> memberList) {
+		this.memberList = memberList;
+	}
+	
+	
+}

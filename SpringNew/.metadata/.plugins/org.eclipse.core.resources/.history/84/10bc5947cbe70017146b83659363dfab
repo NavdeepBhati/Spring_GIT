@@ -1,0 +1,33 @@
+package com.websystique.springmvc.service;
+
+import java.util.List;
+
+import com.websystique.springmvc.beans.Message;
+
+public class MessageBoardServiceImpl implements MessageBoardService {
+
+	@Override
+	public List<Message> listMessages() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void postMessage(Message message) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteMessage(Message message) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Message findMessageById(Long messageId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,27 @@
+package com.rest.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.rest.service.MemberService;
+
+@Controller
+public class RestMemberController {
+	private final MemberService memberService;
+
+	@Autowired
+	public RestMemberController(MemberService memberService) {
+		super();
+		this.memberService = memberService;
+	}
+
+	@RequestMapping("/members")
+	public String getRestMembers(Model model) {
+		Member members = new Member();
+		members.addMembers(memberService.findAll());
+		model.addAttribute("members", members);
+		return "membertemplate";
+	}
+}
